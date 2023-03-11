@@ -1,2 +1,25 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import { currentUser, pb } from '../lib/pocketbase';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import BabbleEditor from '../lib/BabbleEditor.svelte';
+
+	let redirect = () => {};
+
+	$: {
+		if (!$currentUser) {
+			redirect();
+		}
+	}
+
+	// goto is set under onmount to avoid server redirects
+	onMount(() => {
+		redirect = () => {
+			goto('/sign-up');
+		};
+	});
+</script>
+
+{#if $currentUser}
+	<div><BabbleEditor /></div>
+{/if}
