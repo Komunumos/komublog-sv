@@ -45,7 +45,6 @@
 	async function signIn() {
 		try {
 			const user = await pb.collection('users').authWithPassword(email, password);
-			console.log(user);
 		} catch (err: any) {
 			validationErrors = [{ field: '', error: 'Invalid username or password.' }];
 		}
@@ -77,7 +76,6 @@
 				});
 			}
 		}
-		console.log(validationErrors);
 		validationErrors = validationErrors;
 	}
 

@@ -1,12 +1,18 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { babbleStore } from '../stores/babbleStore';
+	import type { Babble } from '../types/babble';
+	import { currentUser, pb } from './pocketbase';
 
 	let babble = '';
-	const dispatch = createEventDispatcher();
 
-	function handleSubmit() {
-		if (babble.length > 0 && babble.length <= 280) {
-			dispatch('babble', { text: babble });
+	async function handleSubmit() {
+		if (babble.length > 0 && babble.length <= 300) {
+			const newBabble = {
+				author: $currentUser?.id,
+				babble
+			};
+
+			await pb.collection('posts').create(newBabble);
 			babble = '';
 		}
 	}
@@ -29,7 +35,7 @@
 	<textarea
 		id="babble-textarea"
 		class="textarea"
-    placeholder="{chooseRandomText()}"
+		placeholder={chooseRandomText()}
 		bind:value={babble}
 		rows="4"
 		cols="50"

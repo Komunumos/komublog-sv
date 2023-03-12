@@ -4,6 +4,7 @@
 	async function signOut() {
 		pb.authStore.clear();
 	}
+
 </script>
 
 <nav>
