@@ -1,8 +1,8 @@
 /* Amber Dark scheme (Forced) */
 /* Enabled if forced with data-theme="dark" */
 [data-theme="dark"] {
-    --primary: #09e4bf;
-    --primary-hover: #2cfcd9;
+    --primary: #15ccae;
+    --primary-hover: #19e1c0;
     --primary-focus: rgba(26, 158, 122, 0.25);
     --primary-inverse: rgba(0, 0, 0, 0.75);
     --background-color: #171c26;
