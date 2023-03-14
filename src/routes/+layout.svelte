@@ -4,7 +4,7 @@
 	import { currentUser, pb } from '../lib/pocketbase';
 
 	function goToConfig() {
-		goto("/config")
+		goto('/config');
 	}
 
 	async function signOut() {
@@ -14,7 +14,12 @@
 
 <nav>
 	<ul>
-		<li><strong>Komublog</strong></li>
+		<li>
+			<a class="logo" href="/">
+				<img class="logo" src="/ghost.png" alt="Komublog Logo" width="30" /><strong>Komublog</strong
+				>
+			</a>
+		</li>
 	</ul>
 	{#if $currentUser}
 		<ul>
@@ -36,5 +41,16 @@
 <style>
 	nav {
 		margin: 0 15px 0 15px;
+	}
+
+	img.logo {
+		margin-right: 5px;
+	}
+
+	a.logo {
+		text-decoration: none;
+		text-decoration: none;
+		color: inherit;
+		cursor: pointer;
 	}
 </style>

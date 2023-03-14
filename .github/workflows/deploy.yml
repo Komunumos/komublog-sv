@@ -1,0 +1,45 @@
+name: Deploy to Digital Ocean
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Update config.ts with apiUrl
+      run: |
+        echo "export default {" > src/config.ts
+        echo "  apiUrl: \"${{ secrets.API_URL }}\"" >> src/config.ts
+        echo "}" >> src/config.ts
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Build SvelteKit app
+      run: pnpm run build
+
+    - name: Deploy to Digital Ocean Droplet
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_IP }}
+        username: root
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          systemctl stop komublog.service
+          rm -rf /path/to/your/app/previous-build
+          cp -r path/to/your/app/build /path/to/your/app/previous-build
+          cd /path/to/your/app/previous-build
+          pnpm install --prod
+          systemctl start komublog.service
