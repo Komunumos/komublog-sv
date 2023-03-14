@@ -12,6 +12,13 @@
 	let loading = true;
 	let resizedSrc = '';
 
+	let redirect = () => {};
+	$: {
+		if (!$currentUser) {
+			redirect();
+		}
+	}
+
 	async function handleImageChange(event: any) {
 		const input = event.target as HTMLInputElement;
 		const file = input.files?.[0];
@@ -57,6 +64,10 @@
 			avatarUrl = getAvatar100(user.id, user.avatar);
 		}
 		loading = false;
+
+		redirect = () => {
+			goto('/sign-up');
+		};
 	});
 </script>
 

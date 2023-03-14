@@ -39,6 +39,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Komublog</title>
+</svelte:head>
+
 {#if $currentUser}
 	<div><BabbleEditor /></div>
 
