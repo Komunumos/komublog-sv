@@ -199,12 +199,6 @@
 		}
 	}
 
-	/* Nav */
-	summary[role='link'].secondary:is([aria-current], :hover, :active, :focus) {
-		background-color: transparent;
-		color: var(--secondary-hover);
-	}
-
 	/* Hero Image */
 	article div:nth-of-type(2) {
 		display: none;
