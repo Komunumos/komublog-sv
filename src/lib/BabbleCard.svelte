@@ -2,13 +2,15 @@
 	import BabbleEditor from './BabbleEditor.svelte';
 	import type { Babble } from '../types/babble';
 	import { getAvatar50 } from './avatarHelper';
+	import { pb } from './pocketbase';
 
 	export let babble: Babble;
 
 	let showReplyEditor = false;
 
-	function like() {
-		babble.likes++;
+	async function like() {
+		let response = await pb.send(`api/like/${babble.id}`, {'method': 'PUT'});
+		babble.likes = response.likes;
 	}
 
 	function retweet() {
@@ -51,7 +53,7 @@
 			<span role="img" aria-label="Like">❤️</span>
 			{babble.likes}
 		</button>
-		<button class="outline" on:click={retweet}>
+		<!-- <button class="outline" on:click={retweet}>
 			<span role="img" aria-label="Retweet">🔄</span>
 			{babble.reblabs}
 		</button>
@@ -60,7 +62,7 @@
 		</button>
 		<button class="outline" on:click={toggleReplyEditor}>
 			<span role="img" aria-label="Reply">💬</span>
-		</button>
+		</button> -->
 	</div>
 	{#if showReplyEditor}
 		<BabbleEditor />
