@@ -1,5 +1,5 @@
 export interface Babble {
-    id?: string | undefined;
+    id: string;
     author: string;
     username?: string | undefined;
     avatar?: string | undefined;

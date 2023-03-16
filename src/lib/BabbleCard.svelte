@@ -3,13 +3,16 @@
 	import type { Babble } from '../types/babble';
 	import { getAvatar50 } from './avatarHelper';
 	import { pb } from './pocketbase';
+	import { getImageUrl } from './imageHelper';
 
 	export let babble: Babble;
 
 	let showReplyEditor = false;
+	let dialogRef: HTMLElement;
+	let selectedImage = '';
 
 	async function like() {
-		let response = await pb.send(`api/like/${babble.id}`, {'method': 'PUT'});
+		let response = await pb.send(`api/like/${babble.id}`, { method: 'PUT' });
 		babble.likes = response.likes;
 	}
 
@@ -43,7 +46,16 @@
 		{#if babble.images && babble.images.length > 0}
 			<div class="images">
 				{#each babble.images as image}
-					<img src={image} alt="Babble" />
+					<img
+						class="rounded-image"
+						src={getImageUrl('posts', babble.id, image)}
+						alt="Babble"
+						on:click={() => {
+							dialogRef.setAttribute('open', '');
+							selectedImage = getImageUrl('posts', babble.id, image);
+						}}
+						on:keyup={() => {}}
+					/>
 				{/each}
 			</div>
 		{/if}
@@ -68,6 +80,13 @@
 		<BabbleEditor />
 	{/if}
 </article>
+
+<dialog bind:this={dialogRef} id="image-dialog" data-theme="dark">
+	<article>
+		<img src={selectedImage} alt="Babble" />
+		<button class="close-dialog" on:click={() => dialogRef.removeAttribute('open')}>✖</button>
+	</article>
+</dialog>
 
 <style>
 	.card {
@@ -106,9 +125,8 @@
 	}
 
 	.card .images {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		grid-gap: 10px;
+		display: flex;
+		justify-content: start;
 	}
 
 	.card .actions {
@@ -123,5 +141,25 @@
 		border: none;
 		cursor: pointer;
 		font-size: 1rem;
+	}
+
+	.rounded-image {
+		width: 75px;
+		height: 75px;
+		margin-right: 10px;
+		object-fit: cover;
+		border-radius: 8px;
+		cursor: pointer;
+	}
+
+	.close-dialog {
+		position: absolute;
+		top: 5px;
+		right: 10px;
+		font-size: 1rem;
+		border: none;
+		background: transparent;
+		color: white;
+		cursor: pointer;
 	}
 </style>

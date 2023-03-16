@@ -24,7 +24,7 @@
 	{#if $currentUser}
 		<ul>
 			<li>Hello {$currentUser.username}!</li>
-			<li><button class="outline" on:click={goToConfig}>⚙</button></li>
+			<li><button class="outline config-button" on:click={goToConfig}>⚙</button></li>
 			<li><button on:click={signOut}>Log out</button></li>
 		</ul>
 	{/if}

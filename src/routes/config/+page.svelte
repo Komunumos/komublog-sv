@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { getAvatar100 } from '$lib/avatarHelper';
-	import { resizeThenCrop, dataURItoBlob } from '$lib/imageHelper';
+	import { resizeThenCrop, dataURItoBlob, readFileAsDataURL, loadImage } from '$lib/imageHelper';
 	import { currentUser, pb } from '$lib/pocketbase';
 	import { onMount } from 'svelte';
 
@@ -22,21 +22,13 @@
 	async function handleImageChange(event: any) {
 		const input = event.target as HTMLInputElement;
 		const file = input.files?.[0];
-		const reader = new FileReader();
 
-		reader.onload = async (event) => {
-			const dataURL = event.target?.result as string;
-			const image = new Image();
-			image.onload = async () => {
-				const resizedImage = await resizeThenCrop(image);
-				resizedSrc = resizedImage;
-			};
-			image.src = dataURL;
-		};
+		if (!file) return;
 
-		if (file) {
-			reader.readAsDataURL(file);
-		}
+		const dataURL = await readFileAsDataURL(file)
+		const image = await loadImage(dataURL);
+		const resizedImage = await resizeThenCrop(image);
+		resizedSrc = resizedImage;
 	}
 
 	async function handleUpdateProfile() {
@@ -47,8 +39,7 @@
 
 				if (file && resizedSrc) {
 					formData.append('avatar', dataURItoBlob(resizedSrc));
-				}
-				const response = await pb.collection('users').update($currentUser?.id, formData);
+				}await pb.collection('users').update($currentUser?.id, formData);
 				goto('/');
 			} catch (error) {
 				console.log(error);
