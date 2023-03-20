@@ -98,7 +98,7 @@
 <dialog open={imageOpen} id="image-dialog" data-theme="dark">
 	<article>
 		<header>
-			<a href={''} aria-label="Close" on:click={() => (imageOpen = null)} class="close"> &nbsp; </a>
+			<a aria-label="Close" on:click={() => (imageOpen = null)} class="close"> &nbsp; </a>
 		</header>
 		<img src={selectedImage} alt="Babble" />
 	</article>
@@ -121,13 +121,8 @@
 		margin-bottom: 15px;
 	}
 
-	dialog > article > header > a:link {
-		text-decoration: inherit;
-		color: inherit;
-	}
-
-	dialog > article > header > a:visited {
-		text-decoration: inherit;
+	dialog > article > header > a {
+		text-decoration: none;
 		color: inherit;
 	}
 
