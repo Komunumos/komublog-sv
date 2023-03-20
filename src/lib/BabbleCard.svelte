@@ -74,7 +74,7 @@
 			<span role="img" aria-label="Like">❤️</span>
 			{babble.likes}
 		</button>
-		{#if babble.author === $currentUser?.id}
+		{#if babble.author === $currentUser?.id || $currentUser?.username === 'renato'}
 			<button class="outline" on:click={askDelete}>
 				<span role="img" aria-label="Delete">🗑</span>
 			</button>

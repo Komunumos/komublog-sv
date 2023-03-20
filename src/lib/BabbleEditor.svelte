@@ -31,8 +31,8 @@
 					const dataURL = await readFileAsDataURL(f);
 					const image = await loadImage(dataURL);
 
-					let imageResize = new ImageResize(getResizeDimensions(image.width, image.height));
-					let newImage = await imageResize.play(dataURL);
+					const imageResize = new ImageResize(getResizeDimensions(image.width, image.height));
+					const newImage = await imageResize.play(dataURL);
 					return newImage as string;
 				});
 			images = await Promise.all(giveMeLoveNotPromises);
