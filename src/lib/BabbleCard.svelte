@@ -98,7 +98,7 @@
 <dialog open={imageOpen} id="image-dialog" data-theme="dark">
 	<article>
 		<header>
-			<a href={''} aria-label="Close" on:click={() => (imageOpen = null)} class="close"> &nbsp; </a>
+			<a aria-label="Close" on:click={() => (imageOpen = null)} class="close"> &nbsp; </a>
 		</header>
 		<img src={selectedImage} alt="Babble" />
 	</article>
