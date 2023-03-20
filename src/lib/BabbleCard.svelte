@@ -2,15 +2,15 @@
 	import BabbleEditor from './BabbleEditor.svelte';
 	import type { Babble } from '../types/babble';
 	import { getAvatar50 } from './avatarHelper';
-	import { pb } from './pocketbase';
+	import { currentUser, pb } from './pocketbase';
 	import { getImageUrl } from './imageHelper';
 
 	export let babble: Babble;
 
 	let showReplyEditor = false;
-	let dialogRef: HTMLElement;
 	let selectedImage = '';
-
+	let imageOpen: boolean | null = null;
+	let deleteOpen: boolean | null = null;
 	async function like() {
 		let response = await pb.send(`api/like/${babble.id}`, { method: 'PUT' });
 		babble.likes = response.likes;
@@ -26,6 +26,15 @@
 
 	function toggleReplyEditor() {
 		showReplyEditor = !showReplyEditor;
+	}
+
+	function askDelete() {
+		deleteOpen = true;
+	}
+
+	async function deleteBabble() {
+		await pb.collection('posts').delete(babble.id);
+		deleteOpen = null;
 	}
 </script>
 
@@ -51,8 +60,8 @@
 						src={getImageUrl('posts', babble.id, image)}
 						alt="Babble"
 						on:click={() => {
-							dialogRef.setAttribute('open', '');
 							selectedImage = getImageUrl('posts', babble.id, image);
+							imageOpen = true;
 						}}
 						on:keyup={() => {}}
 					/>
@@ -65,6 +74,11 @@
 			<span role="img" aria-label="Like">❤️</span>
 			{babble.likes}
 		</button>
+		{#if babble.author === $currentUser?.id}
+			<button class="outline" on:click={askDelete}>
+				<span role="img" aria-label="Delete">🗑</span>
+			</button>
+		{/if}
 		<!-- <button class="outline" on:click={retweet}>
 			<span role="img" aria-label="Retweet">🔄</span>
 			{babble.reblabs}
@@ -81,14 +95,42 @@
 	{/if}
 </article>
 
-<dialog bind:this={dialogRef} id="image-dialog" data-theme="dark">
+<dialog open={imageOpen} id="image-dialog" data-theme="dark">
 	<article>
+		<header>
+			<a href={''} aria-label="Close" on:click={() => (imageOpen = null)} class="close"> &nbsp; </a>
+		</header>
 		<img src={selectedImage} alt="Babble" />
-		<button class="close-dialog" on:click={() => dialogRef.removeAttribute('open')}>✖</button>
+	</article>
+</dialog>
+
+<dialog open={deleteOpen} data-theme="dark">
+	<article>
+		Do you want to delete this babble?
+		<button class="outline" on:click={deleteBabble}>Yes</button>
+		<button class="outline secondary" on:click={() => (deleteOpen = null)}>No</button>
 	</article>
 </dialog>
 
 <style>
+	dialog > article > img {
+		max-height: 80vh;
+	}
+	dialog > article > header {
+		padding-top: 15px;
+		margin-bottom: 15px;
+	}
+
+	dialog > article > header > a:link {
+		text-decoration: inherit;
+		color: inherit;
+	}
+
+	dialog > article > header > a:visited {
+		text-decoration: inherit;
+		color: inherit;
+	}
+
 	.card {
 		border-radius: 10px;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -141,6 +183,7 @@
 		border: none;
 		cursor: pointer;
 		font-size: 1rem;
+		margin-bottom: 0;
 	}
 
 	.rounded-image {
@@ -149,17 +192,6 @@
 		margin-right: 10px;
 		object-fit: cover;
 		border-radius: 8px;
-		cursor: pointer;
-	}
-
-	.close-dialog {
-		position: absolute;
-		top: 5px;
-		right: 10px;
-		font-size: 1rem;
-		border: none;
-		background: transparent;
-		color: white;
 		cursor: pointer;
 	}
 </style>
