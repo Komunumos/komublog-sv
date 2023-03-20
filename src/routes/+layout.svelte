@@ -1,6 +1,5 @@
 <script>
 	import { goto } from '$app/navigation';
-	import config from '../config';
 	import { currentUser, pb } from '../lib/pocketbase';
 
 	function goToConfig() {
@@ -45,6 +44,7 @@
 
 	img.logo {
 		margin-right: 5px;
+		margin-bottom: 7px;
 	}
 
 	a.logo {
@@ -52,5 +52,6 @@
 		text-decoration: none;
 		color: inherit;
 		cursor: pointer;
+		vertical-align: middle;
 	}
 </style>
