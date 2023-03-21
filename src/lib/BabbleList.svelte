@@ -12,7 +12,7 @@
 <ul class="babble-list">
 	{#if $babbleStore}
 		{#each $babbleStore.filter(filter).slice(0, limit) as babble (babble.id)}
-			<li animate:flip out:fade in:fly={{x: 200}} class="babble-list">
+			<li animate:flip out:fade in:fade class="babble-list">
 				<BabblePost {babble} />
 			</li>
 		{/each}
