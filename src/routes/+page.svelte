@@ -1,20 +1,12 @@
 <script lang="ts">
 	import { currentUser, pb } from '../lib/pocketbase';
-	import { goto } from '$app/navigation';
 	import { onDestroy, onMount } from 'svelte';
 	import BabbleEditor from '../lib/BabbleEditor.svelte';
 	import BabbleList from '$lib/BabbleList.svelte';
 	import type { Babble } from '../types/babble';
 	import { babbleStore } from '../stores/babbleStore';
-	
-	let redirect = () => {};
+
 	let unsubscribe: () => void;
-	
-	$: {
-		if (!$currentUser) {
-			redirect();
-		}
-	}
 
 	onMount(async () => {
 		await pb.collection('posts').unsubscribe('*');
@@ -22,16 +14,11 @@
 			if (action === 'create') {
 				var post: any = await pb.collection('postsView').getOne(record.id);
 				var babble: Babble = { ...post };
-				babbleStore.update(babbles => [babble, ...babbles])
+				babbleStore.update((babbles) => [babble, ...babbles]);
 			} else if (action === 'delete') {
-				babbleStore.update(babbles => [...babbles.filter(b => b.id !== record.id)])
+				babbleStore.update((babbles) => [...babbles.filter((b) => b.id !== record.id)]);
 			}
 		});
-
-		// goto is set under onmount to avoid server redirects
-		redirect = () => {
-			goto('/sign-up');
-		};
 	});
 
 	onDestroy(() => {
@@ -45,6 +32,11 @@
 
 {#if $currentUser}
 	<div><BabbleEditor /></div>
-
-	<BabbleList />
+{:else}
+	<article>
+		<div><span>Sign up to start posting.</span>&nbsp;&nbsp;&nbsp;&nbsp;<a role="button" href="/sign-up">Sign up</a></div>
+		<br /><!--  br goes broooom! -->
+		<small><span>Already have an account?</span>&nbsp;<a href="/sign-in">Sign In</a></small>
+	</article>
 {/if}
+<BabbleList />
