@@ -4,6 +4,8 @@
 	import { getAvatar50 } from './avatarHelper';
 	import { currentUser, pb } from './pocketbase';
 	import { getImageUrl } from './imageHelper';
+	import { ImageEventBus } from '$lib/imageEventBus.js';
+	import { browser } from '$app/environment';
 
 	export let babble: Babble;
 
@@ -11,6 +13,7 @@
 	let selectedImage = '';
 	let imageOpen: boolean | null = null;
 	let deleteOpen: boolean | null = null;
+
 	async function like() {
 		let response = await pb.send(`api/like/${babble.id}`, { method: 'PUT' });
 		babble.likes = response.likes;
@@ -36,6 +39,13 @@
 		await pb.collection('posts').delete(babble.id);
 		deleteOpen = null;
 	}
+
+	function openImageModal(image: string) {
+		if (browser) {
+			window.location.hash = image;
+		}
+		ImageEventBus.emit('image-modal-event', getImageUrl('posts', babble.id, image));
+	}
 </script>
 
 <article class="card" data-theme="light">
@@ -59,10 +69,7 @@
 						class="rounded-image"
 						src={getImageUrl('posts', babble.id, image)}
 						alt="Babble"
-						on:click={() => {
-							selectedImage = getImageUrl('posts', babble.id, image);
-							imageOpen = true;
-						}}
+						on:click={() => openImageModal(image)}
 						on:keyup={() => {}}
 					/>
 				{/each}
@@ -95,15 +102,6 @@
 	{/if}
 </article>
 
-<dialog open={imageOpen} id="image-dialog" data-theme="dark">
-	<article>
-		<header>
-			<a aria-label="Close" on:click={() => (imageOpen = null)} class="close"> &nbsp; </a>
-		</header>
-		<img src={selectedImage} alt="Babble" />
-	</article>
-</dialog>
-
 <dialog open={deleteOpen} data-theme="dark">
 	<article>
 		Do you want to delete this babble?
@@ -113,19 +111,6 @@
 </dialog>
 
 <style>
-	dialog > article > img {
-		max-height: 80vh;
-	}
-	dialog > article > header {
-		padding-top: 15px;
-		margin-bottom: 15px;
-	}
-
-	dialog > article > header > a {
-		text-decoration: none;
-		color: inherit;
-	}
-
 	.card {
 		border-radius: 10px;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
