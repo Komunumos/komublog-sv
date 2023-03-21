@@ -1,5 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
+	import ImageModal from '$lib/ImageModal.svelte';
 	import { currentUser, pb } from '../lib/pocketbase';
 
 	function goToConfig() {
@@ -36,6 +37,8 @@
 <main class="container">
 	<slot />
 </main>
+
+<ImageModal />
 
 <style>
 	nav {
