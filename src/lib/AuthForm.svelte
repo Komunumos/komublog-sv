@@ -156,6 +156,7 @@
 					<span><b>{field}</b>{field ? ':' : ''} {error}</span><br />
 				{/each}
 			</div>
+			<div class="cf-turnstile" data-sitekey="0x4AAAAAAADaEsxUPA39umjh"></div> 
 			<button type="submit" class="contrast" disabled={invalidForm} on:click={handleSubmit}
 				>{isSignUp ? 'Sign Up' : 'Sign in'}</button
 			>
