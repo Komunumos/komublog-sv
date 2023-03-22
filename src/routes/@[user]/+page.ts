@@ -5,10 +5,16 @@ import type { Babble } from '../../types/babble';
 import type { RouteParams } from './$types';
 
 export const load = async ({ params }: { params: RouteParams }) => {
-  console.log('loading user')
+	const users = await pb.collection('usersView').getFullList();
+  const user = users.filter(u => u.username === params.user)[0]
+	if (!user) {
+		throw error(404, {
+			message: 'Not found'
+		});
+	}
 
 	const posts: ListResult<any> = await pb.collection('postsView').getList(1, 50, {
-		filter: `username = '${params.user}'`
+		filter: `username = "${params.user}"`
 	});
 
 	const babblePosts = posts.items.map((i) => {
@@ -16,7 +22,7 @@ export const load = async ({ params }: { params: RouteParams }) => {
 		return b;
 	});
 	return {
-		user: params.user,
+		user: { id: user.id, username: user.username, name: user.name, avatar: user.avatar},
 		posts: babblePosts
 	};
 };

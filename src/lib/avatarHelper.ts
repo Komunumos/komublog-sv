@@ -6,3 +6,7 @@ export function getAvatar50(userId: string, avatar: string): string {
 export function getAvatar100(userId: string, avatar: string): string {
 	return `${config.apiUrl}/api/files/users/${userId}/${avatar}?thumb=100x100`;
 }
+
+export function getAvatar300(userId: string, avatar: string): string {
+	return `${config.apiUrl}/api/files/users/${userId}/${avatar}?thumb=300x300`;
+}

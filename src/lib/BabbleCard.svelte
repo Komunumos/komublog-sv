@@ -5,6 +5,7 @@
 	import { currentUser, pb } from './pocketbase';
 	import { getImageUrl } from './imageHelper';
 	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
 
 	export let babble: Babble;
 
@@ -52,7 +53,7 @@
 			<img src="https://via.placeholder.com/50x50" alt="Author Avatar" />
 		{/if}
 		<div class="info">
-			<h2>@{babble.username}</h2>
+			<h2 on:click={() => goto(`@${babble.username}`)} on:keydown={() => {}}>@{babble.username}</h2>
 			<p>{babble.name}</p>
 		</div>
 	</div>
