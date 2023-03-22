@@ -13,7 +13,7 @@
 		<img class="avatar" src="https://via.placeholder.com/300x300" alt="Author Avatar" />
 	{/if}
 	<hgroup>
-		<h1>{data.user.username}</h1>
+		<h1>@{data.user.username}</h1>
 		<h2>{data.user.name}</h2>
 	</hgroup>
 </article>
@@ -23,6 +23,6 @@
 <style>
 	img.avatar {
 		border-radius: 50%;
-    max-width: 200px;
+		max-width: 200px;
 	}
 </style>

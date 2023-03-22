@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import ImageModal from '$lib/ImageModal.svelte';
 	import { currentUser, pb } from '../lib/pocketbase';
-
+	
 	function goToConfig() {
 		goto('/config');
 	}
@@ -23,7 +23,7 @@
 	</ul>
 	{#if $currentUser}
 		<ul>
-			<li>Hello {$currentUser.username}!</li>
+			<li>Hello <span on:keydown={() => {}} on:click={() => goto(`@${$currentUser?.username}`)}>@{$currentUser.username}</span>!</li>
 			<li><button class="outline config-button" on:click={goToConfig}>⚙</button></li>
 			<li><button on:click={signOut}>Log out</button></li>
 		</ul>
