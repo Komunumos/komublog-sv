@@ -5,13 +5,14 @@
 	import { fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
+	export let babbles: Babble[]|null = null;
 	export let limit = Infinity; // set the maximum number of babbles to display
 	export let filter: (babble: Babble) => boolean = () => true; // set the filter function for babbles
 </script>
 
 <ul class="babble-list">
-	{#if $babbleStore}
-		{#each $babbleStore.filter(filter).slice(0, limit) as babble (babble.id)}
+	{#if babbles|| $babbleStore}
+		{#each (babbles||$babbleStore).filter(filter).slice(0, limit) as babble (babble.id)}
 			<li animate:flip out:fade in:fade class="babble-list">
 				<BabblePost {babble} />
 			</li>
