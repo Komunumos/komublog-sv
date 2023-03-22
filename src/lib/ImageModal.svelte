@@ -1,55 +1,45 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { onDestroy, onMount } from 'svelte';
-	import { ImageEventBus } from './imageEventBus';
+	import { onMount } from 'svelte';
+	import { getImageUrl } from './imageHelper';
 
 	let imageOpen: boolean | null = null;
 	let image: string | null = null;
-	let unsubscribe = () => {};
-
-	function handleEvent(eventImage: string | null) {
-		console.log(eventImage);
-		imageOpen = eventImage ? true : null;
-		image = eventImage;
-	}
-
 	function closeModal() {
-		imageOpen = null;
-		image = null;
 		if (browser) {
-			history.back();
+			window.location.hash = ''
 		}
 	}
 
-	if (browser) {
-		window.onpopstate = () => {
-			if (imageOpen) {
+	function closeOnEsc(event: KeyboardEvent) {
+		if (event.code === 'Escape' || event.code === 'Esc') {
+			closeModal();
+		}
+	}
+
+    function loadImage() {
+			const locationParts = window.location.hash.split('/');
+			if (locationParts.length === 5 && locationParts[1] === 'image') {
+				image = getImageUrl(locationParts[2], locationParts[3], locationParts[4]);
+				imageOpen = true;
+			} else {
+				image = null;
 				imageOpen = null;
 			}
-		};
+		}
+
+	if (browser) {
+		window.onpopstate = loadImage;
+        loadImage();
 	}
 
 	$: {
-		if (imageOpen) {
-			document.onkeydown = function (event: KeyboardEvent) {
-				if (event.code === 'Escape' || event.code === 'Esc') {
-					closeModal();
-				}
-			};
+		if (browser && imageOpen) {
+			document.addEventListener('keydown', closeOnEsc);
+		} else if (browser) {
+			document.removeEventListener('keydown', closeOnEsc);
 		}
 	}
-
-	onMount(() => {
-		unsubscribe = ImageEventBus.subscribe(({ event, image }) => {
-			if (event === 'image-modal-event') {
-				handleEvent(image);
-			}
-		});
-	});
-
-	onDestroy(() => {
-		unsubscribe();
-	});
 </script>
 
 <dialog open={imageOpen} id="image-dialog" data-theme="dark">

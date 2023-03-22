@@ -31,7 +31,8 @@
 					const dataURL = await readFileAsDataURL(f);
 					const image = await loadImage(dataURL);
 
-					const imageResize = new ImageResize(getResizeDimensions(image.width, image.height));
+					const {width, height} = getResizeDimensions(image.width, image.height);
+					const imageResize = new ImageResize({width, height, quality: 1});
 					const newImage = await imageResize.play(dataURL);
 					return newImage as string;
 				});

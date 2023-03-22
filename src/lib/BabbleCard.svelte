@@ -4,14 +4,11 @@
 	import { getAvatar50 } from './avatarHelper';
 	import { currentUser, pb } from './pocketbase';
 	import { getImageUrl } from './imageHelper';
-	import { ImageEventBus } from '$lib/imageEventBus.js';
 	import { browser } from '$app/environment';
 
 	export let babble: Babble;
 
 	let showReplyEditor = false;
-	let selectedImage = '';
-	let imageOpen: boolean | null = null;
 	let deleteOpen: boolean | null = null;
 
 	async function like() {
@@ -42,9 +39,8 @@
 
 	function openImageModal(image: string) {
 		if (browser) {
-			window.location.hash = image;
+			window.location.hash = `/image/posts/${babble.id}/${image}`;
 		}
-		ImageEventBus.emit('image-modal-event', getImageUrl('posts', babble.id, image));
 	}
 </script>
 

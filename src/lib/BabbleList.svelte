@@ -2,7 +2,7 @@
 	import { babbleStore } from '../stores/babbleStore';
 	import type { Babble } from '../types/babble';
 	import BabblePost from './BabbleCard.svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
 	export let limit = Infinity; // set the maximum number of babbles to display
