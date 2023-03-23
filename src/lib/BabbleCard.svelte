@@ -64,7 +64,7 @@
 				{#each babble.images as image}
 					<img
 						class="rounded-image"
-						src={getImageUrl('posts', babble.id, image)}
+						src={`${getImageUrl('posts', babble.id, image)}?thumb=75x75`}
 						alt="Babble"
 						on:click={() => openImageModal(image)}
 						on:keyup={() => {}}
