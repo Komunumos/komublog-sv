@@ -7,7 +7,9 @@
 	let image: string | null = null;
 	function closeModal() {
 		if (browser) {
-			window.location.hash = ''
+			history.replaceState(null, '', '');
+			image = null;
+			imageOpen = null;
 		}
 	}
 
