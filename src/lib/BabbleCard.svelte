@@ -60,7 +60,7 @@
 	<div class="babble">
 		<p>{babble.babble}</p>
 		{#if babble.images && babble.images.length > 0}
-			<div class="images">
+			<figure class="images">
 				{#each babble.images as image}
 					<img
 						class="rounded-image"
@@ -70,7 +70,7 @@
 						on:keyup={() => {}}
 					/>
 				{/each}
-			</div>
+			</figure>
 		{/if}
 	</div>
 	<div class="actions">
@@ -146,6 +146,12 @@
 	.card .images {
 		display: flex;
 		justify-content: start;
+	}
+
+	.card .images {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		white-space: nowrap;
 	}
 
 	.card .actions {

@@ -7,7 +7,7 @@
 	let image: string | null = null;
 	function closeModal() {
 		if (browser) {
-			history.replaceState(null, '', '');
+			history.replaceState(null, '', '#');
 			image = null;
 			imageOpen = null;
 		}
