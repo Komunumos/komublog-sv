@@ -70,4 +70,8 @@
 		text-decoration: none;
 		color: inherit;
 	}
+
+	dialog > article {
+		overflow-y: hidden;
+	}
 </style>
