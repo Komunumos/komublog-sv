@@ -1,88 +1,74 @@
 // using js for this since it was pretty freaking annoying to have to deal with this weird types I still don't understand
 // also, with my poor knowledge of file and image processing in JS I'm pretty sure this is kinda dirty and can be improved
 
+
 /**
  * @param {HTMLImageElement} image
  * @param {number} width
  * @param {number} height
  * @param {string} position
- * @return {Promise<string>} - A promise that resolves to the Data URL string.
  */
 export async function cropImage(image, width = 300, height = 300, position = 'center') {
 	const canvas = document.createElement('canvas');
 	const ctx = canvas.getContext('2d');
-
 	// Set canvas dimensions to match desired output size
 	canvas.width = width;
 	canvas.height = height;
-
 	// Calculate position to start cropping from
-	let x = 0,
-		y = 0;
+	let x = 0, y = 0;
 	if (image.width / image.height > width / height) {
-		// Image is wider than desired aspect ratio
-		switch (position) {
-			case 'center':
-				x = (image.width - (image.height * width) / height) / 2;
-				break;
-			case 'bottom':
-				x = image.width - (image.height * width) / height;
-				break;
-			// 'top' is default
-		}
+	  // Image is wider than desired aspect ratio
+	  switch (position) {
+		case 'center':
+		  x = (image.width - image.height * width / height) / 2;
+		  break;
+		case 'bottom':
+		  x = (image.width - image.height * width / height);
+		  break;
+		// 'top' is default
+	  }
 	} else {
-		// Image is taller than desired aspect ratio
-		switch (position) {
-			case 'center':
-				y = (image.height - (image.width * height) / width) / 2;
-				break;
-			case 'bottom':
-				y = image.height - (image.width * height) / width;
-				break;
-			// 'top' is default
-		}
+	  // Image is taller than desired aspect ratio
+	  switch (position) {
+		case 'center':
+		  y = (image.height - image.width * height / width) / 2;
+		  break;
+		case 'bottom':
+		  y = (image.height - image.width * height / width);
+		  break;
+		// 'top' is default
+	  }
 	}
-
 	// Draw image onto canvas at desired position
 	ctx?.drawImage(image, x, y, image.width - 2 * x, image.height - 2 * y, 0, 0, width, height);
-
 	return canvas.toDataURL();
-}
-
-/**
- * @param {HTMLImageElement} image
- * @param {number} width
- * @param {number} height
- * @return {Promise<string>} - A promise that resolves to the Data URL string.
- */
-export async function resizeImageWithAspectRatio(image, width = 300, height = 300) {
-	let resizeCanvas = document.createElement('canvas');
-	let resizeContext = resizeCanvas.getContext('2d');
-
-	const desiredAspectRatio = width / height;
-	const currentAspectRatio = image.width / image.height;
-	let newWidth = 0;
-	let newHeight = 0;
-	// respect aspect ratio
-
-	console.log('desiredAspectRatio', desiredAspectRatio);
-	console.log('currentAspectRatio', currentAspectRatio);
-	if (Math.abs(desiredAspectRatio - currentAspectRatio) > 0.5) {
-		if (image.width > image.height) {
-			resizeCanvas.width = newWidth = width * currentAspectRatio;
-			resizeCanvas.height = newHeight = height;
-		} else {
-			const otherAspectRatio = image.height / image.width;
-			resizeCanvas.width = newWidth = width;
-			resizeCanvas.height = newHeight = height * otherAspectRatio;
-		}
-	} else {
-		console.log('aspect ratio respected');
-	}
-
-	resizeContext?.drawImage(image, 0, 0, newWidth, newHeight);
-	return resizeCanvas.toDataURL();
-}
+  }
+  /**
+   * @param {HTMLImageElement} image
+   * @param {number} width
+   * @param {number} height
+   */
+  export async function resizeImageWithAspectRatio(image, width = 300, height = 300) {
+	  let resizeCanvas = document.createElement('canvas');
+	  let resizeContext = resizeCanvas.getContext('2d');
+	  const desiredAspectRatio = width / height;
+	  const currentAspectRatio = image.width / image.height;
+	  let newWidth = 0;
+	  let newHeight = 0;
+	  // respect aspect ratio
+	  if (desiredAspectRatio != currentAspectRatio) {
+		  if (image.width > image.height) {
+			  resizeCanvas.width = newWidth = width * currentAspectRatio;
+			  resizeCanvas.height = newHeight = height;
+		  } else {
+			  const otherAspectRatio = image.height / image.width;
+			  resizeCanvas.width = newWidth = width;
+			  resizeCanvas.height = newHeight = height * otherAspectRatio;
+		  }
+	  }
+	  resizeContext?.drawImage(image, 0, 0, newWidth, newHeight);
+	  return resizeCanvas.toDataURL();
+  }
 
 /**
  * @param {HTMLImageElement} image
