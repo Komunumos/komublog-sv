@@ -18,7 +18,7 @@
 	</hgroup>
 </article>
 
-<BabbleList babbles={data.babbles} hasMore={data.hasMore} loadPage={data.loadBabblesPage} />
+<BabbleList babbles={data.babbles} hasMore={data.hasMore} loadNextPage={data.loadNextPage} />
 
 <style>
 	img.avatar {

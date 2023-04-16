@@ -4,7 +4,6 @@ import type { RouteParams } from './$types';
 import { loadBabblesPage } from '$lib/postsService';
 
 export const load = async ({ params }: { params: RouteParams }) => {
-	console.log('loading user page')
 	const users = await pb.collection('usersView').getFullList();
 	const user = users.filter((u) => u.username === params.user)[0];
 	if (!user) {
@@ -13,12 +12,13 @@ export const load = async ({ params }: { params: RouteParams }) => {
 		});
 	}
 
-	const { babbles, hasMore } = await loadBabblesPage(1, `username = "${params.user}"`)
+	let page = 1;
+	const { babbles, hasMore } = await loadBabblesPage(page, `username = "${params.user}"`);
 
 	return {
 		user: { id: user.id, username: user.username, name: user.name, avatar: user.avatar },
 		babbles,
 		hasMore,
-		loadBabblesPage
+		loadNextPage: async () => await loadBabblesPage(++page, `username = "${params.user}"`)
 	};
 };

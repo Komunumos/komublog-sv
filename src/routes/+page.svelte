@@ -46,4 +46,4 @@
 		<small><span>Already have an account?</span>&nbsp;<a href="/sign-in">Sign In</a></small>
 	</article>
 {/if}
-<BabbleList babbles={[...babbles]} hasMore={data.hasMore} loadPage={data.loadBabblesPage} />
+<BabbleList babbles={[...babbles]} hasMore={data.hasMore} loadNextPage={data.loadNextPage} />

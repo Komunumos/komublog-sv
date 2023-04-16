@@ -7,14 +7,14 @@
 
 	export let babbles: Babble[];
 	export let hasMore: boolean;
-	export let loadPage: () => Promise<{ babbles: Babble[]; hasMore: boolean }>;
+	export let loadNextPage: () => Promise<{ babbles: Babble[]; hasMore: boolean }>;
 
 	let observer: IntersectionObserver;
 	onMount(() => {
 		observer = new IntersectionObserver(
 			async (entries: IntersectionObserverEntry[]) => {
 				if (entries[0].isIntersecting) {
-					const pageResult = await loadPage();
+					const pageResult = await loadNextPage();
 
 					const rawBabbles = [...babbles, ...pageResult.babbles];
 					const babblesMap = new Map();

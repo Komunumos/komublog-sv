@@ -1,12 +1,12 @@
 import { loadBabblesPage } from '$lib/postsService';
 
 export const load = async () => {
-	console.log('loading root')
-	const { babbles, hasMore } = await loadBabblesPage(1);
+	let page = 1;
+	const { babbles, hasMore } = await loadBabblesPage(page);
 
 	return {
 		babbles,
 		hasMore,
-		loadBabblesPage
+		loadNextPage: async () => await loadBabblesPage(++page)
 	  };
 };
