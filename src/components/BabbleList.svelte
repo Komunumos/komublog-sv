@@ -33,16 +33,6 @@
 		);
 	});
 
-	function observeSentinel(node: HTMLDivElement) {
-		observer.observe(node);
-
-		return {
-			destroy() {
-				observer.unobserve(node);
-			}
-		};
-	}
-
 	let sentinel: HTMLDivElement | null;
 	$: if (sentinel) {
 		observer.observe(sentinel);
