@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
-	import { getImageUrl } from './imageHelper';
+	import { getImageUrl } from '$lib/imageUtils';
 
 	let imageOpen: boolean | null = null;
 	let image: string | null = null;

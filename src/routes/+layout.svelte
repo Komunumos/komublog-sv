@@ -1,7 +1,7 @@
 <script>
 	import { goto } from '$app/navigation';
-	import ImageModal from '$lib/ImageModal.svelte';
-	import { currentUser, pb } from '../lib/pocketbase';
+	import ImageModal from '../components/ImageModal.svelte';
+	import { currentUser, pb } from '$lib/pocketbase';
 	
 	function goToConfig() {
 		goto('/config');

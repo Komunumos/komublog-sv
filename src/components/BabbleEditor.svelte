@@ -1,6 +1,11 @@
 <script lang="ts">
-	import { dataURItoBlob, getResizeDimensions, loadImage, readFileAsDataURL } from './imageHelper';
-	import { currentUser, pb } from './pocketbase';
+	import {
+		dataURItoBlob,
+		getResizeDimensions,
+		loadImage,
+		readFileAsDataURL
+	} from '$lib/imageUtils';
+	import { currentUser, pb } from '$lib/pocketbase';
 	import ImageResize from 'image-resize';
 
 	let babble = '';
@@ -22,6 +27,13 @@
 		}
 	}
 
+	async function handleKeyDown(event: KeyboardEvent) {
+		if (event.ctrlKey && event.key === 'Enter') {
+			event.preventDefault();
+			await handleSubmit();
+		}
+	}
+
 	async function handleImageChange(event: Event) {
 		const input = event.target as HTMLInputElement;
 		if (input.files) {
@@ -31,8 +43,8 @@
 					const dataURL = await readFileAsDataURL(f);
 					const image = await loadImage(dataURL);
 
-					const {width, height} = getResizeDimensions(image.width, image.height);
-					const imageResize = new ImageResize({width, height, quality: 0.9});
+					const { width, height } = getResizeDimensions(image.width, image.height);
+					const imageResize = new ImageResize({ width, height, quality: 0.9 });
 					const newImage = await imageResize.play(dataURL);
 					return newImage as string;
 				});
@@ -58,11 +70,11 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<!-- <label class="label" for="babble-textarea">Compose your babble:</label> -->
 	<textarea
 		id="babble-textarea"
 		class="textarea"
 		placeholder={chooseRandomText()}
+		on:keydown={handleKeyDown}
 		bind:value={babble}
 		rows="4"
 		cols="50"

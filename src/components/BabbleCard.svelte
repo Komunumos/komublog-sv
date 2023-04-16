@@ -1,9 +1,9 @@
 <script lang="ts">
 	import BabbleEditor from './BabbleEditor.svelte';
 	import type { Babble } from '../types/babble';
-	import { getAvatar50 } from './avatarHelper';
-	import { currentUser, pb } from './pocketbase';
-	import { getImageUrl } from './imageHelper';
+	import { getAvatar50 } from '$lib/avatarHelper';
+	import { currentUser, pb } from '$lib//pocketbase';
+	import { getImageUrl } from '$lib/imageUtils';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 

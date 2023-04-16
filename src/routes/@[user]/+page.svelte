@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getAvatar300 } from '$lib/avatarHelper';
-	import BabbleList from '$lib/BabbleList.svelte';
+	import BabbleList from '../../components/BabbleList.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -18,7 +18,7 @@
 	</hgroup>
 </article>
 
-<BabbleList babbles={data.posts} />
+<BabbleList babbles={data.babbles} hasMore={data.hasMore} loadPage={data.loadBabblesPage} />
 
 <style>
 	img.avatar {

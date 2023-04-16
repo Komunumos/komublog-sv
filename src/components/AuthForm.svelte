@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { currentUser, pb } from './pocketbase';
+	import { currentUser, pb } from '$lib/pocketbase';
 
 	let redirect = () => {};
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { getAvatar100 } from '$lib/avatarHelper';
-	import { resizeThenCrop, dataURItoBlob, readFileAsDataURL, loadImage } from '$lib/imageHelper';
+	import { resizeThenCrop, dataURItoBlob, readFileAsDataURL, loadImage } from '$lib/imageUtils';
 	import { currentUser, pb } from '$lib/pocketbase';
 	import { onMount } from 'svelte';
 
