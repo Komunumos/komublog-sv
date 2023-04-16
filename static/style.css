@@ -1,22 +1,40 @@
 /* Amber Dark scheme (Forced) */
 /* Enabled if forced with data-theme="dark" */
-[data-theme="dark"] {
-    --primary: #15ccae;
-    --primary-hover: #19e1c0;
-    --primary-focus: rgba(26, 158, 122, 0.25);
-    --primary-inverse: rgba(0, 0, 0, 0.75);
-    --background-color: #171c26;
-    --form-element-background-color: #283142;
+[data-theme='dark'] {
+	--primary: #15ccae;
+	--primary-hover: #19e1c0;
+	--primary-focus: rgba(26, 158, 122, 0.25);
+	--primary-inverse: rgba(0, 0, 0, 0.75);
+	--background-color: #171c26;
+	--form-element-background-color: #283142;
+}
+
+button {
+	cursor: pointer !important;
+}
+
+/* Amber (Common styles) */
+:root {
+	--form-element-active-border-color: var(--primary);
+	--form-element-focus-color: var(--primary-focus);
+	--switch-color: var(--primary-inverse);
+	--switch-checked-background-color: var(--primary);
+}
+
+.CodeMirror {
+	border-radius: 10px !important;
+	height: 300px !important;
   }
 
-  button {
-    cursor:pointer !important;
+.EasyMDEContainer {
+	margin: 0 auto;
+}
+
+.cm-header {
+	font-weight: normal !important;
+	font-style: normal !important;
+	text-decoration: none !important;
+	text-transform: none !important;
+	font-size: unset !important;
   }
   
-  /* Amber (Common styles) */
-  :root {
-    --form-element-active-border-color: var(--primary);
-    --form-element-focus-color: var(--primary-focus);
-    --switch-color: var(--primary-inverse);
-    --switch-checked-background-color: var(--primary);
-  }

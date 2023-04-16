@@ -1,3 +1,4 @@
+<!-- BabbleEditor.svelte -->
 <script lang="ts">
 	import {
 		dataURItoBlob,
@@ -7,6 +8,7 @@
 	} from '$lib/imageUtils';
 	import { currentUser, pb } from '$lib/pocketbase';
 	import ImageResize from 'image-resize';
+	import EasyMDE from './EasyMDE.svelte';
 
 	let babble = '';
 	let images: string[] = [];
@@ -67,19 +69,24 @@
 		const randomIndex = Math.floor(Math.random() * textArray.length);
 		return textArray[randomIndex];
 	}
+
+	const easyMDEOptions = {
+		placeholder: chooseRandomText(),
+		status: false,
+		toolbar: false,
+		spellChecker: false,
+		forceSync: true,
+		maxLength: 300		
+	};
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<textarea
-		id="babble-textarea"
-		class="textarea"
-		placeholder={chooseRandomText()}
-		on:keydown={handleKeyDown}
+	<EasyMDE
 		bind:value={babble}
-		rows="4"
-		cols="50"
-		maxlength="300"
+		on:keydown={({ detail: event }) => handleKeyDown(event)}
+		options={easyMDEOptions}
 	/>
+
 	<div class="image-preview-container">
 		{#each images as image, index}
 			<div class="image-preview">
@@ -109,12 +116,6 @@
 <style>
 	form {
 		width: 100%;
-	}
-	textarea {
-		margin-bottom: 0;
-		resize: none;
-		border: 1px solid #ccc;
-		font-size: 1rem;
 	}
 
 	.flex-container {
