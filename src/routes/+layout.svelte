@@ -1,8 +1,9 @@
 <script>
 	import { goto } from '$app/navigation';
-	import ImageModal from '../components/ImageModal.svelte';
+	import ImageModal from '@components/ImageModal.svelte';
 	import { currentUser, pb } from '$lib/pocketbase';
-	
+	import { fade } from 'svelte/transition';
+
 	function goToConfig() {
 		goto('/config');
 	}
@@ -34,7 +35,7 @@
 	<div />
 {/if}
 
-<main class="container">
+<main class="container" transition:fade>
 	<slot />
 </main>
 

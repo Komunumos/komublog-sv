@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getAvatar300 } from '$lib/avatarHelper';
-	import BabbleList from '../../components/BabbleList.svelte';
+	import BabbleList from '@components/BabbleList.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;

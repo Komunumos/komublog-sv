@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Babble } from '../types/babble';
+	import type { Babble } from '@models/babble';
 	import BabblePost from './BabbleCard.svelte';
 	import { fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';

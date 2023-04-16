@@ -1,17 +1,19 @@
 <script lang="ts">
 	import BabbleEditor from './BabbleEditor.svelte';
-	import type { Babble } from '../types/babble';
-	import { getAvatar50 } from '$lib/avatarHelper';
+	import type { Babble } from '@models/babble';
+	import { getAvatar80 } from '$lib/avatarHelper';
 	import { currentUser, pb } from '$lib//pocketbase';
 	import { getImageUrl } from '$lib/imageUtils';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { formatDate } from '$lib/timeHelper';
 
 	export let babble: Babble;
 
 	let showReplyEditor = false;
 	let deleteOpen: boolean | null = null;
-
+	let shortDate: string;
+	let date: string;
 	async function like() {
 		let response = await pb.send(`api/like/${babble.id}`, { method: 'PUT' });
 		babble.likes = response.likes;
@@ -43,18 +45,29 @@
 			window.location.hash = `/image/posts/${babble.id}/${image}`;
 		}
 	}
+
+	$: {
+		({shortDate, date} = formatDate(babble.postDate || ''))
+	}
 </script>
 
 <article class="card" data-theme="light">
 	<div class="header">
-		{#if babble.avatar}
-			<img src={getAvatar50(babble.author, babble.avatar)} alt="Author Avatar" />
-		{:else}
-			<img src="https://via.placeholder.com/50x50" alt="Author Avatar" />
-		{/if}
+		<img class="avatar"
+			src={babble.avatar
+				? getAvatar80(babble.author, babble.avatar)
+				: 'https://via.placeholder.com/80x80'}
+			alt="Author Avatar"
+		/>
+
 		<div class="info">
-			<h2 on:click={() => goto(`@${babble.username}`)} on:keydown={() => {}}>@{babble.username}</h2>
+			<h2 on:click={() => goto(`/@${babble.username}`)} on:keydown={() => {}}>
+				<a href={`/@${babble.username}`}>@{babble.username}</a>
+			</h2>
 			<p>{babble.name}</p>
+			<a href={`/@${babble.username}/${babble.id}`}>
+				<small title={date}>{shortDate}</small>
+			</a>
 		</div>
 	</div>
 	<div class="babble">
@@ -108,6 +121,15 @@
 </dialog>
 
 <style>
+	a {
+		color: inherit;
+	}
+
+	.avatar {
+		width: 80px;
+		height: auto;
+	}
+
 	.card {
 		border-radius: 10px;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -136,6 +158,11 @@
 		font-size: 0.8rem;
 		margin: 0;
 		color: #666;
+	}
+
+	.card .header small {
+		font-size: 0.7rem;
+		margin: 0;
 	}
 
 	.card .babble {

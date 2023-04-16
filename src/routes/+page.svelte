@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { currentUser, pb } from '../lib/pocketbase';
-	import BabbleEditor from '../components/BabbleEditor.svelte';
-	import BabbleList from '../components/BabbleList.svelte';
+	import BabbleEditor from '@components/BabbleEditor.svelte';
+	import BabbleList from '@components/BabbleList.svelte';
 	import type { PageData } from './$types';
 	import { onMount, onDestroy } from 'svelte';
-	import type { Babble } from '../types/babble';
+	import type { Babble } from '@models/babble';
 
 	export let data: PageData;
 	let unsubscribe: () => void;

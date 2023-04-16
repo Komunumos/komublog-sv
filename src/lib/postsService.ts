@@ -1,6 +1,6 @@
 import { pb } from '$lib/pocketbase';
 import type { ListResult } from 'pocketbase';
-import type { Babble } from '../types/babble';
+import type { Babble } from '@models/babble';
 
 export async function loadBabblesPage(
 	page = 1,
