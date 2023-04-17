@@ -8,13 +8,14 @@
 	} from '$lib/imageUtils';
 	import { currentUser, pb } from '$lib/pocketbase';
 	import ImageResize from 'image-resize';
-	import EasyMDE from './EasyMDE.svelte';
+	import EasyMDE from './ClientOnlyEasyMDE.svelte';
 
 	let babble = '';
 	let images: string[] = [];
 
 	async function handleSubmit(): Promise<void> {
-		if (babble.length > 0 && babble.length <= 300 && $currentUser?.id) {
+		if (babble.trim().length > 0 && babble.length <= 300 && $currentUser?.id) {
+			babble = babble.trim();
 			babble = await replaceUsernamesWithLinks(babble);
 
 			const formData = new FormData();
@@ -102,7 +103,7 @@
 		const randomIndex = Math.floor(Math.random() * textArray.length);
 		return textArray[randomIndex];
 	}
-	
+
 	const easyMDEOptions = {
 		placeholder: chooseRandomText(),
 		status: false,
@@ -137,7 +138,7 @@
 				<button
 					class="babble-button"
 					type="submit"
-					disabled={babble.length === 0 || babble.length > 300}>Babble</button
+					disabled={babble.trim().length === 0 || babble.length > 300}>Babble</button
 				>
 			</div>
 		</div>
