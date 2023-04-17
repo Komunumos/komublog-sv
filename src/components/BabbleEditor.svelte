@@ -14,7 +14,8 @@
 	let images: string[] = [];
 
 	async function handleSubmit(): Promise<void> {
-		if (babble.trim().length > 0 && babble.length <= 300 && $currentUser?.id) {
+		if (babble.replaceAll('&nbsp;', ' ').trim().length > 0 && babble.length <= 300 && $currentUser?.id) {
+
 			babble = babble.trim();
 			babble = await replaceUsernamesWithLinks(babble);
 
@@ -138,7 +139,7 @@
 				<button
 					class="babble-button"
 					type="submit"
-					disabled={babble.trim().length === 0 || babble.length > 300}>Babble</button
+					disabled={babble.replaceAll('&nbsp;', ' ').trim().length === 0 || babble.length > 300}>Babble</button
 				>
 			</div>
 		</div>
