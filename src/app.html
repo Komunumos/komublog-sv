@@ -4,12 +4,21 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="stylesheet" href="/css/pico.css">
-		<link rel="stylesheet" href="/style.css">
+		<link rel="stylesheet" href="/css/pico.css" />
+		<link rel="stylesheet" href="/style.css" />
 		<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+		<link rel="stylesheet" href="//unpkg.com/@beyonk/gdpr-cookie-consent-banner/dist/style.css" />
+		<script src="https://unpkg.com/@beyonk/gdpr-cookie-consent-banner/dist/browser/bundle.min.js"></script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
-			<div style="display: contents">%sveltekit.body%</div>
+		<div style="display: contents">%sveltekit.body%</div>
 	</body>
+	<script>
+		GdprConsent.attachBanner(document.body, {
+			cookieName: 'komublog_gdpr_consent',
+			cookieConfig: { domain: 'komu.blog' },
+			showEditIcon: false
+		});
+	</script>
 </html>
