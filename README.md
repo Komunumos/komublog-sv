@@ -18,7 +18,7 @@ The project is still a **work in progress** current features include:
 * tagging other users (albeit without a notification center this is quite pointless atm)
 
 ## Running and building
-If you want to run your own version of komublog you will also need to run the backend project, you can follow the instructions here it [here](https://github.com/Komunumos/komuback).
+If you want to run your own version of komublog you will also need to run the backend project, you can find it and follow the instructions [here](https://github.com/Komunumos/komuback).
 
 Since it a sveltekit project you run and build like you would do any other svelte kit project
 
