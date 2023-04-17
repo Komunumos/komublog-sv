@@ -13,13 +13,15 @@
 	let babble = '';
 	let images: string[] = [];
 
-	async function handleSubmit() {
+	async function handleSubmit(): Promise<void> {
 		if (babble.length > 0 && babble.length <= 300 && $currentUser?.id) {
+			babble = await replaceUsernamesWithLinks(babble);
+
 			const formData = new FormData();
 			formData.append('author', $currentUser?.id);
 			formData.append('babble', babble);
 
-			images.forEach((image) => {
+			images.forEach((image: string) => {
 				formData.append('images', dataURItoBlob(image));
 			});
 
@@ -29,11 +31,42 @@
 		}
 	}
 
-	async function handleKeyDown(event: KeyboardEvent) {
-		if (event.ctrlKey && event.key === 'Enter') {
-			event.preventDefault();
-			await handleSubmit();
+	async function replaceUsernamesWithLinks(babble: string): Promise<string> {
+		const usernames = getUsersFromBabble(babble);
+		const usersView = await getUsersViewByUsernames(usernames);
+
+		usernames.forEach((username: string) => {
+			const user = usersView.find((u) => u === username);
+			if (user) {
+				const link = `[@${username}](/@${username})`;
+				babble = babble.replace(new RegExp(`@${username}`, 'g'), link);
+			}
+		});
+
+		return babble;
+	}
+
+	function getUsersFromBabble(babble: string): string[] {
+		const regex = /@(\w+)(?=[\s\n]|$)/g;
+		const matches: string[] = [];
+		let match: RegExpExecArray | null;
+		while ((match = regex.exec(babble))) {
+			matches.push(match[1]);
 		}
+		return matches;
+	}
+
+	async function getUsersViewByUsernames(usernames: string[]): Promise<string[]> {
+		const filter = generateFilterFromUsernames(usernames);
+		const usersView = await pb
+			.collection('usersView')
+			.getList<{ username: string }>(1, 50, { filter });
+		return usersView.items.map((u) => u.username);
+	}
+
+	function generateFilterFromUsernames(usernames: string[]): string {
+		const filter = usernames.map((username: string) => `username = "${username}"`).join(' || ');
+		return filter;
 	}
 
 	async function handleImageChange(event: Event) {
@@ -69,23 +102,21 @@
 		const randomIndex = Math.floor(Math.random() * textArray.length);
 		return textArray[randomIndex];
 	}
-
+	
 	const easyMDEOptions = {
 		placeholder: chooseRandomText(),
 		status: false,
 		toolbar: false,
 		spellChecker: false,
 		forceSync: true,
-		maxLength: 300		
+		maxLength: 300,
+		maxHeight: '150px',
+		promptURLs: false
 	};
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<EasyMDE
-		bind:value={babble}
-		on:keydown={({ detail: event }) => handleKeyDown(event)}
-		options={easyMDEOptions}
-	/>
+	<EasyMDE bind:value={babble} options={easyMDEOptions} {handleSubmit} />
 
 	<div class="image-preview-container">
 		{#each images as image, index}

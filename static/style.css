@@ -23,8 +23,7 @@ button {
 
 .CodeMirror {
 	border-radius: 10px !important;
-	height: 300px !important;
-  }
+}
 
 .EasyMDEContainer {
 	margin: 0 auto;
@@ -36,5 +35,4 @@ button {
 	text-decoration: none !important;
 	text-transform: none !important;
 	font-size: unset !important;
-  }
-  
+}

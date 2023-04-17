@@ -7,13 +7,22 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { formatDate } from '$lib/timeHelper';
-
+	import { marked } from 'marked';
 	export let babble: Babble;
 
 	let showReplyEditor = false;
 	let deleteOpen: boolean | null = null;
 	let shortDate: string;
 	let date: string;
+
+	const renderer = new marked.Renderer();
+	renderer.heading = (text, level) => `${'#'.repeat(level)} ${text}`;
+	renderer.link = (href, title, text) => {
+		const attrs = 'target="_blank" rel="noopener noreferrer"';
+		return `<a href="${href}" ${title ? `title="${title}"`: ''} ${attrs}>${text}</a>`;
+	};
+	marked.setOptions({ renderer, breaks: true });
+
 	async function like() {
 		let response = await pb.send(`api/like/${babble.id}`, { method: 'PUT' });
 		babble.likes = response.likes;
@@ -47,13 +56,14 @@
 	}
 
 	$: {
-		({shortDate, date} = formatDate(babble.postDate || ''))
+		({ shortDate, date } = formatDate(babble.postDate || ''));
 	}
 </script>
 
 <article class="card" data-theme="light">
 	<div class="header">
-		<img class="avatar"
+		<img
+			class="avatar"
 			src={babble.avatar
 				? getAvatar80(babble.author, babble.avatar)
 				: 'https://via.placeholder.com/80x80'}
@@ -71,7 +81,7 @@
 		</div>
 	</div>
 	<div class="babble">
-		<p>{babble.babble}</p>
+		<p>{@html marked(babble.babble)}</p>
 		{#if babble.images && babble.images.length > 0}
 			<figure class="images">
 				{#each babble.images as image}
