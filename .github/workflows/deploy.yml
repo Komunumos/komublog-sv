@@ -42,9 +42,9 @@ jobs:
 
       - name: Copy build folder to the server
         run: |
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" scp -r -o StrictHostKeyChecking=no build root@${{ secrets.SSH_IP }}:/root/newBuild
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" scp -r -o StrictHostKeyChecking=no build root@${{ secrets.SSH_IP }}:/root/komublog/newFront
 
-      - name: Deploy to Digital Ocean Droplet
+      - name: Deploy to Linux VM
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_IP }}
@@ -52,9 +52,9 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             systemctl stop komublog.service
-            rm -rf /root/build
-            cp -r /root/newBuild /root/build
-            rm -rf /root/newBuild
-            cd /root/build
+            rm -rf /root/komublog/front
+            cp -r /root/komublog/newFront /root/komublog/front
+            rm -rf /root/komublog/newFront
+            cd /root/komublog/front
             pnpm install --prod
             systemctl start komublog.service
