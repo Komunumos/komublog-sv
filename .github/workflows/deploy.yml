@@ -1,9 +1,10 @@
-name: Deploy to Digital Ocean
+name: Deploy to VM
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
