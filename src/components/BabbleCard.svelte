@@ -66,7 +66,7 @@
 			class="avatar"
 			src={babble.avatar
 				? getAvatar80(babble.author, babble.avatar)
-				: 'https://via.placeholder.com/80x80'}
+				: 'https://placehold.co/80x80'}
 			alt="Author Avatar"
 		/>
 
