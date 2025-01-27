@@ -10,7 +10,7 @@
 	{#if data.user.avatar}
 		<img class="avatar" src={getAvatar300(data.user.id, data.user.avatar)} alt="Author Avatar" />
 	{:else}
-		<img class="avatar" src="https://via.placeholder.com/300x300" alt="Author Avatar" />
+		<img class="avatar" src="https://placehold.co/300x300" alt="Author Avatar" />
 	{/if}
 	<hgroup>
 		<h1>@{data.user.username}</h1>
